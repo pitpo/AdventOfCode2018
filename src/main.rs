@@ -3,12 +3,13 @@ extern crate utils;
 
 use std::env;
 use utils::Day;
+use utils::network::*;
 
 fn main() {
     let solver: Box<Day>;
     let env_arg = env::args().nth(1).unwrap_or_default();
     match env_arg.as_ref() {
-        "day1" => solver = Box::new(day1::Day1::new()),
+        "day1" => solver = Box::new(day1::Day1::new(get_input_for_day(1))),
         _ => panic!("Unknown or missing argument"),
     }
     println!("-----------PART A SOLUTION-----------");

@@ -1,6 +1,5 @@
 extern crate utils;
 
-use utils::network::*;
 use utils::Day;
 
 pub struct Day1 {
@@ -8,8 +7,7 @@ pub struct Day1 {
 }
 
 impl Day1 {
-    pub fn new() -> Day1 {
-        let input = get_input_for_day(1);
+    pub fn new(input: String) -> Day1 {
         Day1 { input }
     }
 }
