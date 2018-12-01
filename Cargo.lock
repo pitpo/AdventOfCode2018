@@ -8,6 +8,7 @@ name = "aoc18"
 version = "0.1.0"
 dependencies = [
  "day1 0.1.0",
+ "day2 0.1.0",
  "utils 0.1.0",
 ]
 
@@ -127,6 +128,13 @@ dependencies = [
 
 [[package]]
 name = "day1"
+version = "0.1.0"
+dependencies = [
+ "utils 0.1.0",
+]
+
+[[package]]
+name = "day2"
 version = "0.1.0"
 dependencies = [
  "utils 0.1.0",
