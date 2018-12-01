@@ -34,14 +34,12 @@ impl Day for Day1 {
         let input = self.parse_input();
         let mut set: HashSet<i64> = HashSet::new();
         let mut acc: i64 = 0;
-        let mut i = 0;
-        loop {
+        for num in input.iter().cycle() {
             if set.contains(&acc) {
                 break;
             }
             set.insert(acc);
-            acc += input[i];
-            i = if i == input.len() - 1 { 0 } else { i + 1 };
+            acc += num;
         }
         String::from(acc.to_string())
     }
