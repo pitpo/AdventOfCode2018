@@ -24,10 +24,7 @@ impl Day1 {
 impl Day for Day1 {
     fn get_part_a_result(&self) -> String {
         let input = self.parse_input();
-        let mut acc: i64 = 0;
-        for operation in input {
-            acc += operation;
-        }
+        let acc: i64 = input.iter().sum();
         String::from(acc.to_string())
     }
     fn get_part_b_result(&self) -> String {
