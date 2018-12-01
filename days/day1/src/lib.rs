@@ -32,10 +32,9 @@ impl Day for Day1 {
         let mut set: HashSet<i64> = HashSet::new();
         let mut acc: i64 = 0;
         for num in input.iter().cycle() {
-            if set.contains(&acc) {
+            if !set.insert(acc) {
                 break;
             }
-            set.insert(acc);
             acc += num;
         }
         String::from(acc.to_string())
