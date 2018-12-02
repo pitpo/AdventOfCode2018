@@ -68,16 +68,11 @@ impl Day for Day2 {
         for (key, val) in ids {
             if val == min_diff {
                 let mut chars1 = key.0.chars();
-                let mut chars2 = key.1.chars();
-                let mut k = 0;
-                let len = key.0.chars().count();
-                while k < len {
-                    let c1 = chars1.next();
-                    let c2 = chars2.next();
-                    if c1 == c2 {
-                        result.push(c1.unwrap_or_default());
+                let mut chars2: Vec<char> = key.1.chars().collect();
+                for (i, c) in chars1.enumerate() {
+                    if c == chars2[i] {
+                        result.push(c);
                     }
-                    k += 1;
                 }
                 break;
             }
