@@ -7,3 +7,4 @@ authors = ["Piotr Gabrielski <ppitpo@gmail.com>"]
 utils = {path = "utils"}
 day1 = {path = "days/day1"}
 day2 = {path = "days/day2"}
+day3 = {path = "days/day3"}
