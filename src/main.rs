@@ -22,7 +22,7 @@ fn main() {
     println!("{}", solver.get_part_a_result());
     let duration = SystemTime::now().duration_since(timer).unwrap();
     println!(
-        "Took {}.{:08}s",
+        "Took {}.{:09}s",
         duration.as_secs(),
         duration.subsec_nanos()
     );
@@ -31,7 +31,7 @@ fn main() {
     println!("{}", solver.get_part_b_result());
     let duration = SystemTime::now().duration_since(timer).unwrap();
     println!(
-        "Took {}.{:08}s",
+        "Took {}.{:09}s",
         duration.as_secs(),
         duration.subsec_nanos()
     );
