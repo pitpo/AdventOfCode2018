@@ -8,3 +8,4 @@ utils = {path = "utils"}
 day1 = {path = "days/day1"}
 day2 = {path = "days/day2"}
 day3 = {path = "days/day3"}
+day4 = {path = "days/day4"}
