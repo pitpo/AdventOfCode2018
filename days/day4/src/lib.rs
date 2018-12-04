@@ -46,7 +46,7 @@ impl Day4 {
             }
             let entry = heatmap.entry(last_id).or_insert_with(|| {
                 let mut v: Vec<usize> = Vec::new();
-                for i in 0..60 {
+                for _ in 0..60 {
                     v.push(0);
                 }
                 v
@@ -67,7 +67,7 @@ impl Day4 {
 // very ugly, don't have time to fix it now
 impl Day for Day4 {
     fn get_part_a_result(&self) -> String {
-        let mut input = self.parse_input();
+        let input = self.parse_input();
         let heatmap = self.get_time_heatmap(input);
         let mut max_minutes = 0;
         let mut max_id = 0;
@@ -95,7 +95,7 @@ impl Day for Day4 {
         result.to_string()
     }
     fn get_part_b_result(&self) -> String {
-        let mut input = self.parse_input();
+        let input = self.parse_input();
         let heatmap = self.get_time_heatmap(input);
         let mut max_id = 0;
         let mut max_freq = 0;
