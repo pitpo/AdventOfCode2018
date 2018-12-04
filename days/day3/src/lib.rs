@@ -59,7 +59,7 @@ impl Day for Day3 {
         for (i, claim) in input.iter().enumerate() {
             let mut overlaps = false;
             for (j, other_claim) in input.iter().enumerate() {
-                if (i != j) {
+                if i != j {
                     let other_x_end = other_claim[1] + other_claim[3] - 1;
                     let other_y_end = other_claim[2] + other_claim[4] - 1;
                     let x_end = claim[1] + claim[3] - 1;
