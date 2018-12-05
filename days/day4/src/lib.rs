@@ -13,15 +13,7 @@ impl Day4 {
     }
 
     fn parse_input(&self) -> Vec<Vec<usize>> {
-        self.input
-            .lines()
-            .map(|line| {
-                line.split(|c| c == '[' || c == ']' || c == ' ' || c == '-' || c == ':')
-                    .map(|s: &str| s.chars().filter(|c| c.is_digit(10)).collect::<String>())
-                    .filter(|s| !s.is_empty())
-                    .map(|s| s.parse().unwrap_or_default())
-                    .collect()
-            }).collect()
+        utils::extract_unsigned_integers_from_string(&self.input)
     }
 
     fn get_time_heatmap(&self, mut input: Vec<Vec<usize>>) -> HashMap<usize, Vec<usize>> {

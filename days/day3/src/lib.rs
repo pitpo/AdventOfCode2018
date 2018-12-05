@@ -12,14 +12,7 @@ impl Day3 {
     }
 
     fn parse_input(&self) -> Vec<Vec<usize>> {
-        self.input
-            .lines()
-            .map(|line: &str| {
-                line.split(|c: char| c == '@' || c == ',' || c == ':' || c == 'x')
-                    .map(|s: &str| s.chars().filter(|c| c.is_digit(10)).collect::<String>())
-                    .map(|s: String| s.parse().unwrap())
-                    .collect::<Vec<usize>>()
-            }).collect()
+        utils::extract_unsigned_integers_from_string(&self.input)
     }
 }
 
