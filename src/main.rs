@@ -4,6 +4,7 @@ extern crate day3;
 extern crate day4;
 extern crate day5;
 extern crate day6;
+extern crate day7;
 extern crate utils;
 
 use std::env;
@@ -21,6 +22,7 @@ fn main() {
         "day4" => solver = Box::new(day4::Day4::new(get_input_for_day(4))),
         "day5" => solver = Box::new(day5::Day5::new(get_input_for_day(5))),
         "day6" => solver = Box::new(day6::Day6::new(get_input_for_day(6))),
+        "day7" => solver = Box::new(day7::Day7::new(get_input_for_day(7))),
         _ => panic!("Unknown or missing argument"),
     }
     println!("-----------PART A SOLUTION-----------");
