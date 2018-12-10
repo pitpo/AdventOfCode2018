@@ -6,6 +6,7 @@ extern crate day5;
 extern crate day6;
 extern crate day7;
 extern crate day8;
+extern crate day9;
 extern crate day10;
 extern crate utils;
 
@@ -26,6 +27,7 @@ fn main() {
         "day6" => solver = Box::new(day6::Day6::new(get_input_for_day(6))),
         "day7" => solver = Box::new(day7::Day7::new(get_input_for_day(7))),
         "day8" => solver = Box::new(day8::Day8::new(get_input_for_day(8))),
+        "day9" => solver = Box::new(day9::Day9::new(get_input_for_day(9))),
         "day10" => solver = Box::new(day10::Day10::new(get_input_for_day(10))),
         _ => panic!("Unknown or missing argument"),
     }
