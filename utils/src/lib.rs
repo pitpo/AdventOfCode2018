@@ -9,7 +9,7 @@ pub fn extract_integers_from_string(input: &String) -> Vec<Vec<isize>> {
     input
         .lines()
         .map(|line| {
-            line.split(|c: char| !c.is_digit(10))
+            line.split(|c: char| !c.is_digit(10) && c != '-')
                 .filter_map(|s| s.parse().ok())
                 .collect()
         }).collect()
