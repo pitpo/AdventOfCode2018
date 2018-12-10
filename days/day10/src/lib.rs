@@ -26,13 +26,17 @@ impl Day for Day10 {
             mut min_miny,
             mut min_xdiff,
             mut min_ydiff,
-        ) = (0, std::isize::MAX, 0, 0, 0, 0);
-        for i in 0..12000 {
+            mut i,
+        ) = (0, std::isize::MAX / 10, 0, 0, 0, 0, 0);
+        loop {
             let minx = input.iter().map(|v| v[0] + i * v[2]).min().unwrap();
             let miny = input.iter().map(|v| v[1] + i * v[3]).min().unwrap();
             let maxx = input.iter().map(|v| v[0] + i * v[2]).max().unwrap();
             let maxy = input.iter().map(|v| v[1] + i * v[3]).max().unwrap();
             let boundary_size = maxx - minx + maxy - miny;
+            if boundary_size > min_boundary_size * 10 {
+                break;
+            }
             if boundary_size < min_boundary_size {
                 min_boundary_size = boundary_size;
                 mini = i;
@@ -41,6 +45,7 @@ impl Day for Day10 {
                 min_xdiff = maxx - minx + 1;
                 min_ydiff = maxy - miny + 1;
             }
+            i += 1
         }
         let mut result: Vec<Vec<char>> = Vec::new();
         for _ in 0..min_ydiff {
@@ -54,7 +59,7 @@ impl Day for Day10 {
             result[(v[1] + mini * v[3] - min_miny) as usize]
                 [(v[0] + mini * v[2] - min_minx) as usize] = '#';
         }
-        let mut result_str = String::with_capacity((min_ydiff * min_ydiff) as usize + result.len());
+        let mut result_str = String::with_capacity((min_xdiff * min_ydiff) as usize + result.len());
         for i in 0..result.len() {
             for j in 0..result[i].len() {
                 result_str.push(result[i][j]);
@@ -65,17 +70,21 @@ impl Day for Day10 {
     }
     fn get_part_b_result(&self) -> String {
         let input = self.parse_input();
-        let (mut mini, mut min_boundary_size) = (0, std::isize::MAX);
-        for i in 0..12000 {
+        let (mut mini, mut min_boundary_size, mut i) = (0, std::isize::MAX / 10, 0);
+        loop {
             let minx = input.iter().map(|v| v[0] + i * v[2]).min().unwrap();
             let miny = input.iter().map(|v| v[1] + i * v[3]).min().unwrap();
             let maxx = input.iter().map(|v| v[0] + i * v[2]).max().unwrap();
             let maxy = input.iter().map(|v| v[1] + i * v[3]).max().unwrap();
             let boundary_size = maxx - minx + maxy - miny;
+            if boundary_size > min_boundary_size * 10 {
+                break;
+            }
             if boundary_size < min_boundary_size {
                 min_boundary_size = boundary_size;
                 mini = i;
             }
+            i += 1;
         }
         mini.to_string()
     }
