@@ -68,12 +68,14 @@ impl Day for Day11 {
     fn get_part_b_result(&self) -> String {
         let vec = self.get_power_cell_array();
         let (mut max_sum, mut max_region_x, mut max_region_y, mut max_region_size) = (0, 0, 0, 0);
-        // reasonable brute force
-        for k in 3..50 {
-            
+        for k in 3..300 {
+            let mut max_region_sum = 0;
             for i in 0..(300 - k + 1) {
                 for j in 0..(300 - k + 1) {
                     let sum = self.sum_k(&vec, j, i, k);
+                    if sum > max_region_sum {
+                        max_region_sum = sum;
+                    }
                     if sum > max_sum {
                         max_sum = sum;
                         max_region_x = j;
@@ -81,6 +83,9 @@ impl Day for Day11 {
                         max_region_size = k;
                     }
                 }
+            }
+            if max_region_sum + (k as i16) < max_sum {
+                break;
             }
         }
         String::from(format!(
