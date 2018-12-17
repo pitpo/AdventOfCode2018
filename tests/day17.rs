@@ -29,5 +29,5 @@ fn day17_b() {
 
     let ans = solver.get_part_b_result();
     
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "29");
 }

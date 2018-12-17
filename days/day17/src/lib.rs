@@ -48,7 +48,6 @@ impl Day17 {
             .clone();
         let max_x = if max_x[3] == 1 { max_x[2] } else { max_x[0] };
 
-        println!("{} {} {} {}", min_y, max_y, min_x, max_x);
         Day17 {
             input: new_input,
             min_y,
@@ -76,29 +75,34 @@ impl Day17 {
                 }
             }
         }
-        // for row in &map {
-        //     println!("{}", row.iter().collect::<String>());
-        // }
         map
     }
 
     fn tick(map: &mut Vec<Vec<char>>, min_x: usize, visited: &mut Vec<Vec<bool>>) {
         let (x, y) = (500 - min_x + 2, 0);
-        Day17::flow_down(x, y, map, visited);        
+        Day17::flow_down(x, y, map, visited);
     }
 
-    fn split_right(mut x: usize, y: usize, map: &mut Vec<Vec<char>>, visited: &mut Vec<Vec<bool>>) -> bool {
-        while x < map[y].len() - 1 && map[y][x] != '#' && map[y + 1][x] != '.' && map[y+1][x] != '|' {
+    fn split(
+        dir: isize,
+        mut x: usize,
+        y: usize,
+        map: &mut Vec<Vec<char>>,
+        visited: &mut Vec<Vec<bool>>,
+    ) -> bool {
+        while x < map[y].len() - 1
+            && x > 0
+            && map[y][x] != '#'
+            && map[y + 1][x] != '.'
+            && map[y + 1][x] != '|'
+        {
             if map[y][x] == '.' {
-                map[y][x] = '|'
+                map[y][x] = '|';
             }
-            if map[y][x+1] == '~' && map[y][x] == '|' {
-                map[y][x+1] = '|';
-            }
-            x += 1;
+            x = (x as isize + dir) as usize;
         }
         if map[y][x] == '#' {
-            map[y][x-1] = '~';
+            map[y][(x as isize - dir) as usize] = '~';
             return true;
         } else {
             Day17::flow_down(x, y, map, visited);
@@ -106,30 +110,16 @@ impl Day17 {
         }
     }
 
-    fn split_left(mut x: usize, y: usize, map: &mut Vec<Vec<char>>, visited: &mut Vec<Vec<bool>>) -> bool {
-        while x > 0 && map[y][x] != '#' && map[y+1][x] != '.' && map[y+1][x] != '|' {
-            if map[y][x] == '.' {
-                map[y][x] = '|'
-            }
-            if map[y][x-1] == '~' && map[y][x] == '|' {
-                map[y][x-1] = '|';
-            }
-            x -= 1;
-        }
-        if map[y][x] == '#' {
-            map[y][x+1] = '~';
-            return true;
-        } else {
-            Day17::flow_down(x, y, map, visited);
-            return false;
-        }
-    }
-
-    fn flow_down(mut x: usize, mut y: usize, map: &mut Vec<Vec<char>>, visited: &mut Vec<Vec<bool>>) {
+    fn flow_down(
+        mut x: usize,
+        mut y: usize,
+        map: &mut Vec<Vec<char>>,
+        visited: &mut Vec<Vec<bool>>,
+    ) {
         if visited[y][x] {
             return;
         }
-        while y < map.len() - 1 && map[y+1][x] != '~' && map[y+1][x] != '#' {
+        while y < map.len() - 1 && map[y + 1][x] != '~' && map[y + 1][x] != '#' {
             if map[y][x] == '.' {
                 map[y][x] = '|';
             }
@@ -140,8 +130,8 @@ impl Day17 {
             map[y][x] = '|';
             return;
         }
-        let left = Day17::split_left(x, y, map, visited);
-        let right = Day17::split_right(x, y, map, visited);
+        let left = Day17::split(-1, x, y, map, visited);
+        let right = Day17::split(1, x, y, map, visited);
         if left && right {
             x += 1;
             if map[y][x] != '#' {
@@ -160,24 +150,18 @@ impl Day17 {
                     x -= 1;
                 }
             }
-        } 
+        }
         if !left && right {
-            x += 1;
-            if map[y][x] != '#' {
-                while x < map[y].len() - 1 && map[y][x] != '~' {
-                    x += 1;
-                }
-                map[y][x] = '|';
+            while x < map[y].len() - 1 && map[y][x] != '~' {
+                x += 1;
             }
+            map[y][x] = '|';
         }
         if !right && left {
-            x -= 1;
-            if map[y][x] != '#' {
-                while x > 0 && map[y][x] != '~' {
-                    x -= 1;
-                }
-                map[y][x] = '|';
+            while x > 0 && map[y][x] != '~' {
+                x -= 1;
             }
+            map[y][x] = '|';
         }
     }
 
@@ -185,28 +169,28 @@ impl Day17 {
         let mut map = self.build_map();
         map[0][500 - self.min_x + 2] = '|';
         let min_x = self.min_x;
-        let builder = std::thread::Builder::new().name("worker".to_string()).stack_size(10*1024*1024);
-        let thread = builder.spawn(move|| {
-            let mut prev_map = map.clone();
-            loop {
-            //for _ in 0..250 {
-                let mut visited: Vec<Vec<bool>> = Vec::with_capacity(map.len());
-                for i in &map {
-                    let mut row: Vec<bool> = Vec::with_capacity(i.len());
-                    for _ in i {
-                        row.push(false);
-                    }
-                    visited.push(row);
+        let mut prev_map = map.clone();
+        let mut visited: Vec<Vec<bool>> = Vec::with_capacity(map.len());
+        for row in &map {
+            let mut vec: Vec<bool> = Vec::with_capacity(row.len());
+            for _ in row {
+                vec.push(false);
+            }
+            visited.push(vec);
+        }
+        loop {
+            for row in &mut visited {
+                for value in row.iter_mut() {
+                    *value = false;
                 }
-                Day17::tick(&mut map, min_x, &mut visited);
-                if map.iter().eq(prev_map.iter()) {
-                    break;
-                }
-                prev_map = map.clone();
-            } //map[map.len()-1].iter().filter(|&&c| c == '|').count() < 1;
-            map
-        }).unwrap();
-        thread.join().unwrap()
+            }
+            Day17::tick(&mut map, min_x, &mut visited);
+            if map.iter().eq(prev_map.iter()) {
+                break;
+            }
+            prev_map = map.clone();
+        }
+        map
     }
 }
 
@@ -221,7 +205,6 @@ impl Day for Day17 {
                 }
             }
         }
-        result -= 1; // off by one lol
         result.to_string()
     }
     fn get_part_b_result(&self) -> String {
@@ -234,7 +217,6 @@ impl Day for Day17 {
                 }
             }
         }
-        result -= 1;
         result.to_string()
     }
 }
