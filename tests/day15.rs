@@ -3,10 +3,6 @@ extern crate utils;
 
 use utils::Day;
 
-fn get_input() -> String {
-    String::from("")
-}
-
 #[test]
 fn day15_a1() {
     let solver = day15::Day15::new(String::from("#######
