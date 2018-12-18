@@ -24,12 +24,3 @@ fn day18_a() {
 
     assert_eq!(&ans, "1147");
 }
-
-// #[test]
-// fn day18_b() {
-//     let solver = day18::Day18::new(get_input());
-
-//     let ans = solver.get_part_b_result();
-    
-//     assert_eq!(&ans, "");
-// }

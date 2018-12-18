@@ -8,11 +8,7 @@ pub struct Day18 {
 
 impl Day18 {
     pub fn new(input: String) -> Day18 {
-        let initial_map = input
-            .lines()
-            .filter(|line| !line.is_empty())
-            .map(|line| line.trim().chars().collect::<Vec<char>>())
-            .collect::<Vec<Vec<char>>>();
+        let initial_map = utils::get_char_arrays(&input);
         Day18 { initial_map }
     }
 

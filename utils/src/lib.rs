@@ -24,3 +24,7 @@ pub fn extract_unsigned_integers_from_string(input: &String) -> Vec<Vec<usize>> 
                 .collect()
         }).collect()
 }
+
+pub fn get_char_arrays(input: &String) -> Vec<Vec<char>> {
+        input.lines().filter(|line| !line.is_empty()).map(|line| line.trim().chars().collect::<Vec<char>>()).collect()
+}
