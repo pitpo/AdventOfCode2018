@@ -22,12 +22,3 @@ fn day19_a() {
 
     assert_eq!(&ans, "7");
 }
-
-#[test]
-fn day19_b() {
-    let solver = day19::Day19::new(get_input());
-
-    let ans = solver.get_part_b_result();
-    
-    assert_eq!(&ans, "");
-}

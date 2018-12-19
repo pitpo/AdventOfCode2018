@@ -24,3 +24,4 @@ day16 = {path = "days/day16"}
 day17 = {path = "days/day17"}
 day18 = {path = "days/day18"}
 day19 = {path = "days/day19"}
+day20 = {path = "days/day20"}
