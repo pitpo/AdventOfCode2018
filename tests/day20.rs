@@ -3,17 +3,13 @@ extern crate utils;
 
 use utils::Day;
 
-fn get_input() -> String {
-    String::from("")
-}
-
 #[test]
 fn day20_a1() {
     let solver = day20::Day20::new(String::from("^ENWWW(NEEE|SSE(EE|N))$"));
     
     let ans = solver.get_part_a_result();
 
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "10");
 }
 
 #[test]
@@ -22,7 +18,7 @@ fn day20_a2() {
     
     let ans = solver.get_part_a_result();
 
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "18");
 }
 
 #[test]
@@ -31,7 +27,7 @@ fn day20_a3() {
     
     let ans = solver.get_part_a_result();
 
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "23");
 }
 
 #[test]
@@ -40,14 +36,5 @@ fn day20_a4() {
     
     let ans = solver.get_part_a_result();
 
-    assert_eq!(&ans, "");
-}
-
-#[test]
-fn day20_b() {
-    let solver = day20::Day20::new(get_input());
-
-    let ans = solver.get_part_b_result();
-    
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "31");
 }
