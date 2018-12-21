@@ -4,12 +4,13 @@ use utils::Day;
 use std::collections::BTreeSet;
 
 pub struct Day21 {
-
+    c_value: usize,
 }
 
 impl Day21 {
     pub fn new(input: String) -> Day21 {
-        Day21 { }
+        let c_value = utils::extract_unsigned_integers_from_string(&input)[8][0];
+        Day21 { c_value }
     }
 }
 
@@ -17,7 +18,7 @@ impl Day for Day21 {
     fn get_part_a_result(&self) -> String {
         let (mut b, mut c, mut d, mut f) = (0, 0, 0, 0);
         f = c | 65536;
-        c = 2238642;
+        c = self.c_value;
         loop {
             d = f & 255;
             c = d + c;
@@ -46,7 +47,7 @@ impl Day for Day21 {
         let mut set: BTreeSet<usize> = BTreeSet::new();
         'outer: loop {
             f = c | 65536;
-            c = 2238642;
+            c = self.c_value;
             loop {
                 d = f & 255;
                 c = d + c;
