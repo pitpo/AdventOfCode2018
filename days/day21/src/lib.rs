@@ -1,7 +1,7 @@
 extern crate utils;
 
-use utils::Day;
 use std::collections::BTreeSet;
+use utils::Day;
 
 pub struct Day21 {
     c_value: usize,
