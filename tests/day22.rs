@@ -4,7 +4,8 @@ extern crate utils;
 use utils::Day;
 
 fn get_input() -> String {
-    String::from("")
+    String::from("depth: 510
+target: 10,10")
 }
 
 #[test]
@@ -13,7 +14,7 @@ fn day22_a() {
     
     let ans = solver.get_part_a_result();
 
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "114");
 }
 
 #[test]
@@ -22,5 +23,5 @@ fn day22_b() {
 
     let ans = solver.get_part_b_result();
     
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "45");
 }
