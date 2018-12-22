@@ -1,6 +1,6 @@
 extern crate utils;
 
-use std::thread;
+use std::collections::VecDeque;
 use utils::Day;
 
 const X_MULTIPLIER: usize = 16807;
@@ -64,37 +64,41 @@ impl Day22 {
     }
 
     fn calculate_costs(map: &mut Vec<Vec<Vec<Node>>>, x: usize, y: usize, equipment: usize) {
-        let nodes = vec![(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)];
-        for (next_x, next_y) in nodes {
-            if next_x == std::usize::MAX
-                || next_y == std::usize::MAX
-                || next_x == map[0][0].len()
-                || next_y == map[0].len()
-            {
-                continue;
+        let mut queue: VecDeque<(usize, usize, usize)> = VecDeque::new();
+        queue.push_back((x, y, equipment));
+        while let Some((x, y, equipment)) = queue.pop_front() {
+            let nodes = vec![(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)];
+            for (next_x, next_y) in nodes {
+                if next_x == std::usize::MAX
+                    || next_y == std::usize::MAX
+                    || next_x == map[0][0].len()
+                    || next_y == map[0].len()
+                {
+                    continue;
+                }
+                if (equipment == 0 && map[0][next_y][next_x].node_type == 0)
+                    || (equipment == 1 && map[0][next_y][next_x].node_type == 2)
+                    || (equipment == 2 && map[0][next_y][next_x].node_type == 1)
+                {
+                    continue;
+                }
+                if map[equipment][y][x].cost + 1 < map[equipment][next_y][next_x].cost {
+                    map[equipment][next_y][next_x].cost = map[equipment][y][x].cost + 1;
+                    queue.push_back((next_x, next_y, equipment));
+                }
             }
-            if (equipment == 0 && map[0][next_y][next_x].node_type == 0)
-                || (equipment == 1 && map[0][next_y][next_x].node_type == 2)
-                || (equipment == 2 && map[0][next_y][next_x].node_type == 1)
-            {
-                continue;
-            }
-            if map[equipment][y][x].cost + 1 < map[equipment][next_y][next_x].cost {
-                map[equipment][next_y][next_x].cost = map[equipment][y][x].cost + 1;
-                Day22::calculate_costs(map, next_x, next_y, equipment);
-            }
-        }
-        for i in 0..3 {
-            if i == equipment
-                || (i == 0 && map[0][y][x].node_type == 0)
-                || (i == 1 && map[0][y][x].node_type == 2)
-                || (i == 2 && map[0][y][x].node_type == 1)
-            {
-                continue;
-            }
-            if map[equipment][y][x].cost + 7 < map[i][y][x].cost {
-                map[i][y][x].cost = map[equipment][y][x].cost + 7;
-                Day22::calculate_costs(map, x, y, i);
+            for i in 0..3 {
+                if i == equipment
+                    || (i == 0 && map[0][y][x].node_type == 0)
+                    || (i == 1 && map[0][y][x].node_type == 2)
+                    || (i == 2 && map[0][y][x].node_type == 1)
+                {
+                    continue;
+                }
+                if map[equipment][y][x].cost + 7 < map[i][y][x].cost {
+                    map[i][y][x].cost = map[equipment][y][x].cost + 7;
+                    queue.push_back((x, y, i));
+                }
             }
         }
     }
@@ -112,21 +116,12 @@ impl Day for Day22 {
         sum.to_string()
     }
     fn get_part_b_result(&self) -> String {
-        println!("---This is gonna take a long while---");
         let mut map: Vec<Vec<Vec<Node>>> = Vec::new();
         for _ in 0..3 {
             map.push(self.build_map());
         }
         map[2][0][0].cost = 0;
-        let builder = thread::Builder::new()
-            .name("worker".to_string())
-            .stack_size(1024 * 1024 * 64);
-        let handler = builder
-            .spawn(move || {
-                Day22::calculate_costs(&mut map, 0, 0, 2);
-                map
-            }).unwrap();
-        let map = handler.join().unwrap();
+        Day22::calculate_costs(&mut map, 0, 0, 2);
         map[2][self.target_y][self.target_x].cost.to_string()
     }
 }
