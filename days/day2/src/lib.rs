@@ -27,12 +27,10 @@ impl Day for Day2 {
             for c in line.chars() {
                 *counts.entry(c.into()).or_insert(0) += 1;
             }
-            // well this ended up being overcomplicated lol
             let count: i16 = counts
                 .iter()
-                .map(|entry| *entry.1)
-                .filter(|val| *val == 2 || *val == 3)
-                .fold(1, |acc, val| acc * val);
+                .filter(|(_, &val)| val == 2 || val == 3)
+                .fold(1, |acc, (_, &val)| acc * val);
             if count % 2 == 0 {
                 twos += 1;
             }
@@ -45,38 +43,31 @@ impl Day for Day2 {
     }
     fn get_part_b_result(&self) -> String {
         let input = self.parse_input();
-        let mut ids: HashMap<(&str, &str), usize> = HashMap::new();
-        let mut min_diff = input[0].len();
-        let mut string1_iter = input.iter().cloned();
-        for i in 0..input.len() {
-            let mut string2_iter = input.iter().skip(i + 1).cloned();
-            let string1 = string1_iter.next().unwrap();
-            let string1_chars: Vec<char> = string1.chars().collect();
-            for string2 in string2_iter {
-                let mut diffs = 0;
-                for (j, c) in string2.chars().enumerate() {
-                    if c != string1_chars[j] {
-                        diffs += 1;
-                    }
-                }
-                min_diff = if diffs < min_diff { diffs } else { min_diff };
-                let tuple = (string1, string2);
-                ids.insert(tuple, diffs);
-            }
-        }
-        let mut result = String::new();
-        for (key, val) in ids {
-            if val == min_diff {
-                let mut chars1 = key.0.chars();
-                let mut chars2: Vec<char> = key.1.chars().collect();
-                for (i, c) in chars1.enumerate() {
-                    if c == chars2[i] {
-                        result.push(c);
-                    }
-                }
-                break;
-            }
-        }
+        let ((s1, s2), _) = input
+            .clone()
+            .into_iter()
+            .enumerate()
+            .filter_map(|(i, s1)| {
+                input
+                    .iter()
+                    .skip(i + 1)
+                    .map(|s2| {
+                        let diff: usize = s1
+                            .chars()
+                            .zip(s2.chars())
+                            .filter(|(c1, c2)| c1 != c2)
+                            .count();
+                        ((s1.clone(), s2.clone()), diff)
+                    }).min_by_key(|tuple| tuple.1)
+                    .ok_or(())
+                    .ok()
+            }).min_by_key(|tuple| tuple.1)
+            .unwrap();
+        let result = s1
+            .chars()
+            .zip(s2.chars())
+            .filter_map(|(c1, c2)| if c1 == c2 { Some(c1) } else { None })
+            .collect::<String>();
         result
     }
 }
