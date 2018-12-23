@@ -32,6 +32,7 @@ fn main() {
         "day21" => solver = Box::new(day21::Day21::new(get_input_for_day(21))),
         "day22" => solver = Box::new(day22::Day22::new(get_input_for_day(22))),
         "day23" => solver = Box::new(day23::Day23::new(get_input_for_day(23))),
+        "day24" => solver = Box::new(day24::Day24::new(get_input_for_day(24))),
         _ => panic!("Unknown or missing argument"),
     }
     println!("-----------PART A SOLUTION-----------");
