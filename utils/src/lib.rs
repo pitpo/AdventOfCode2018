@@ -5,7 +5,7 @@ pub mod network;
 
 pub use day::Day;
 
-pub fn extract_integers_from_string(input: &String) -> Vec<Vec<isize>> {
+pub fn extract_integers_from_string<T: std::str::FromStr>(input: &String) -> Vec<Vec<T>> {
     input
         .lines()
         .map(|line| {
