@@ -3,25 +3,20 @@ extern crate utils;
 use utils::Day;
 
 pub struct Day3 {
-    input: String,
+    input: Vec<Vec<usize>>,
 }
 
 impl Day3 {
     pub fn new(input: String) -> Day3 {
+        let input = utils::extract_unsigned_integers_from_string(&input);
         Day3 { input }
-    }
-
-    fn parse_input(&self) -> Vec<Vec<usize>> {
-        utils::extract_unsigned_integers_from_string(&self.input)
     }
 }
 
 impl Day for Day3 {
     fn get_part_a_result(&self) -> String {
-        let input = self.parse_input();
         let mut array: Vec<Vec<usize>> = Vec::new();
-        let mut result = 0;
-        for claim in input {
+        for claim in self.input.iter() {
             for i in 0..(claim[2] + claim[4]) {
                 if i >= array.len() && claim[2] + claim[4] >= array.len() {
                     array.push(Vec::new())
@@ -38,20 +33,15 @@ impl Day for Day3 {
                 }
             }
         }
-        for row in array {
-            for i in row {
-                if i > 1 {
-                    result += 1;
-                }
-            }
-        }
+        let result = array.into_iter().fold(0, |acc, row| {
+            acc + row.into_iter().filter(|&num| num > 1).count()
+        });
         result.to_string()
     }
     fn get_part_b_result(&self) -> String {
-        let input = self.parse_input();
-        for (i, claim) in input.iter().enumerate() {
+        for (i, claim) in self.input.iter().enumerate() {
             let mut overlaps = false;
-            for (j, other_claim) in input.iter().enumerate() {
+            for (j, other_claim) in self.input.iter().enumerate() {
                 if i != j {
                     let other_x_end = other_claim[1] + other_claim[3] - 1;
                     let other_y_end = other_claim[2] + other_claim[4] - 1;
