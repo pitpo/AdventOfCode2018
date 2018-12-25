@@ -13,7 +13,11 @@ impl Day25 {
     }
 
     fn is_adjacent(&self, lhs: &Vec<isize>, rhs: &Vec<isize>) -> bool {
-        (lhs[0] - rhs[0]).abs() + (lhs[1] - rhs[1]).abs() + (lhs[2] - rhs[2]).abs() + (lhs[3] - rhs[3]).abs() <= 3
+        (lhs[0] - rhs[0]).abs()
+            + (lhs[1] - rhs[1]).abs()
+            + (lhs[2] - rhs[2]).abs()
+            + (lhs[3] - rhs[3]).abs()
+            <= 3
     }
 }
 
@@ -39,29 +43,36 @@ impl Day for Day25 {
                 constellation.push(coords.clone());
                 constellations.push(constellation);
             } else {
-                let mut i = 0;
-                while i < constellations.len() {
-                    let mut j = i + 1;
-                    while j < constellations.len() {
-                        let mut join = false;
-                        'outer: for coords in &constellations[i] {
-                            for other_coords in &constellations[j] {
-                                if self.is_adjacent(coords, other_coords) {
-                                    join = true;
-                                    break 'outer;
-                                }
-                            }
-                        }
-                        if join {
-                            constellations[i] = constellations[i].clone().into_iter().chain(constellations[j].clone().into_iter()).collect::<Vec<Vec<isize>>>();
-                            constellations.remove(j);
-                        } else {
-                            j += 1;
+
+            }
+        }
+        let mut i = 0;
+        while i < constellations.len() {
+            let mut j = i + 1;
+            while j < constellations.len() {
+                let mut join = false;
+                'outer: for coords in &constellations[i] {
+                    for other_coords in &constellations[j] {
+                        if self.is_adjacent(coords, other_coords) {
+                            join = true;
+                            break 'outer;
                         }
                     }
-                    i += 1;
+                }
+                if join {
+                    constellations[i] = constellations[i]
+                        .clone()
+                        .into_iter()
+                        .chain(constellations[j].clone().into_iter())
+                        .collect::<Vec<Vec<isize>>>();
+                    constellations.remove(j);
+                    i = 0;
+                    j = 1;
+                } else {
+                    j += 1;
                 }
             }
+            i += 1;
         }
         constellations.len().to_string()
     }
