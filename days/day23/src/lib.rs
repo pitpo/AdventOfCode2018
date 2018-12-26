@@ -1,6 +1,7 @@
 extern crate utils;
 
 use utils::Day;
+use std::collections::BTreeMap;
 
 pub struct Day23 {
     input: Vec<Vec<isize>>,
@@ -44,7 +45,24 @@ impl Day for Day23 {
         result.to_string()
     }
     fn get_part_b_result(&self) -> String {
-        // I give up
-        String::new()
+        let mut map: BTreeMap<isize, isize> = BTreeMap::new();
+        for bot in self.input.iter() {
+            let min = bot[0] + bot[1] + bot[2] - bot[3];
+            *map.entry(min).or_insert(0) += 1;
+            let max = bot[0] + bot[1] + bot[2] + bot[3] + 1;
+            *map.entry(max).or_insert(0) -= 1;
+        }
+        let mut max = 0;
+        let mut max_beg = 0;
+        map.iter().fold(0, |acc, x| {
+            let result = acc + *x.1;
+            if result > max {
+                max = result;
+                max_beg = *x.0;
+            }
+            result
+        });
+        let max_end = map.into_iter().skip_while(|x| x.0 <= max_beg).next().unwrap().0 - 1;
+        max_end.to_string()
     }
 }

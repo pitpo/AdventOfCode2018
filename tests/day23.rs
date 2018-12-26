@@ -31,5 +31,5 @@ pos=<10,10,10>, r=5"));
 
     let ans = solver.get_part_b_result();
     
-    assert_eq!(&ans, "");
+    assert_eq!(&ans, "36");
 }
